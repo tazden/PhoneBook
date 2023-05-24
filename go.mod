@@ -1,4 +1,4 @@
-module PhoneBook
+module github.com/DenisTaztdinov/PhoneBook
 
 go 1.20
 
@@ -9,6 +9,7 @@ require (
 	github.com/jackc/pgx/v4 v4.18.1
 	github.com/joho/godotenv v1.5.1
 	github.com/rs/zerolog v1.15.0
+
 )
 
 require (

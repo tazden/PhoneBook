@@ -3,22 +3,23 @@ package repo
 import (
 	"database/sql"
 	"fmt"
+	"github.com/DenisTaztdinov/PhoneBook/internal/entity"
 )
 
 type PostgresSQLRepository struct {
 	db *sql.DB
 }
 
-func (r *PostgresSQLRepository) GetAll() ([]Contact, error) {
+func (r *PostgresSQLRepository) GetAll() ([]entity.Contact, error) {
 	rows, err := r.db.Query("SELECT id, first_name, last_name, phone, email FROM contacts")
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
 
-	contacts := []Contact{}
+	contacts := []entity.Contact{}
 	for rows.Next() {
-		var contact Contact
+		var contact entity.Contact
 		err := rows.Scan(&contact.ID, &contact.FirstName, &contact.LastName, &contact.Phone, &contact.Email)
 		if err != nil {
 			return nil, err
@@ -30,10 +31,10 @@ func (r *PostgresSQLRepository) GetAll() ([]Contact, error) {
 }
 
 // GetByID возвращает контакт по указанному идентификатору
-func (r *PostgresSQLRepository) GetByID(id int) (*Contact, error) {
+func (r *PostgresSQLRepository) GetByID(id int) (*entity.Contact, error) {
 	row := r.db.QueryRow("SELECT id, first_name, last_name, phone, email FROM contacts WHERE id = $1", id)
 
-	var contact Contact
+	var contact entity.Contact
 	err := row.Scan(&contact.ID, &contact.FirstName, &contact.LastName, &contact.Phone, &contact.Email)
 	if err != nil {
 		if err == sql.ErrNoRows {
@@ -46,7 +47,7 @@ func (r *PostgresSQLRepository) GetByID(id int) (*Contact, error) {
 }
 
 // Create создает новый контакт
-func (r *PostgresSQLRepository) Create(contact *Contact) error {
+func (r *PostgresSQLRepository) Create(contact *entity.Contact) error {
 	_, err := r.db.Exec("INSERT INTO contacts (first_name, last_name, phone, email) VALUES ($1, $2, $3, $4)",
 		contact.FirstName, contact.LastName, contact.Phone, contact.Email)
 	if err != nil {
