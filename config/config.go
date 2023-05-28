@@ -22,7 +22,7 @@ type (
 
 	// HTTP -.
 	HTTP struct {
-		Port string `env-required:"true" yaml:"port" env:"HTTP_PORT"`
+		Port string `env-required:"true" yaml:"port" env:"SERVER_PORT"`
 	}
 
 	// Log -.
@@ -32,8 +32,7 @@ type (
 
 	// PG -.
 	PG struct {
-		PoolMax int    `env-required:"true" yaml:"pool_max" env:"PG_POOL_MAX"`
-		URL     string `env-required:"true"                 env:"PG_URL"`
+		PoolMax int `env-required:"true" yaml:"pool_max" env:"PG_POOL_MAX"`
 	}
 )
 

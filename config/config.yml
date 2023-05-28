@@ -1,0 +1,20 @@
+app:
+  name: 'PhoneBook'
+  version: '1.0.0'
+
+database:
+  host: localhost
+  port: 5432
+  username: postgres
+  password: xxxxxxx
+  dbname: contatcs
+
+http:
+  port: 8080
+
+logger:
+  log_level: 'debug'
+  rollbar_env: 'go-clean-template'
+
+postgres:
+  pool_max: 2

@@ -7,6 +7,7 @@ import (
 	"github.com/DenisTaztdinov/PhoneBook/internal/entity"
 	"github.com/DenisTaztdinov/PhoneBook/internal/usecase/repo"
 	"github.com/DenisTaztdinov/PhoneBook/pkg/logger"
+	_ "github.com/lib/pq"
 	"log"
 	"net/http"
 	"os"
@@ -23,7 +24,7 @@ func Run(cfg *config.Config) {
 	repo := &repo.PostgresSQLRepository{Db: db}
 	handler := &entity.ContactHandler{Repo: repo}
 
-	http.HandleFunc("/contacts", handler.GetAll())
+	http.HandleFunc("/contacts", handler.GetAllContacts)
 
 	port := os.Getenv("PORT")
 	if port == "" {
