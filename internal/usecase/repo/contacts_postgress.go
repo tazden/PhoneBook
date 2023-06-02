@@ -6,11 +6,17 @@ import (
 	"github.com/DenisTaztdinov/PhoneBook/internal/entity"
 )
 
-type PostgresSQLRepository struct {
+type ContactsRepoImpl struct {
 	Db *sql.DB
 }
 
-func (r *PostgresSQLRepository) GetAll() ([]entity.Contact, error) {
+func NewContactsRepo(db *sql.DB) *ContactsRepoImpl {
+	return &ContactsRepoImpl{
+		Db: db,
+	}
+}
+
+func (r *ContactsRepoImpl) GetAll() ([]entity.Contact, error) {
 	rows, err := r.Db.Query("SELECT id, first_name, last_name, phone, email FROM contacts")
 	if err != nil {
 		return nil, err
@@ -31,7 +37,7 @@ func (r *PostgresSQLRepository) GetAll() ([]entity.Contact, error) {
 }
 
 // GetByID возвращает контакт по указанному идентификатору
-func (r *PostgresSQLRepository) GetByID(id int) (*entity.Contact, error) {
+func (r *ContactsRepoImpl) GetByID(id int) (*entity.Contact, error) {
 	row := r.Db.QueryRow("SELECT id, first_name, last_name, phone, email FROM contacts WHERE id = $1", id)
 
 	var contact entity.Contact
@@ -47,7 +53,7 @@ func (r *PostgresSQLRepository) GetByID(id int) (*entity.Contact, error) {
 }
 
 // Create создает новый контакт
-func (r *PostgresSQLRepository) Create(contact *entity.Contact) error {
+func (r *ContactsRepoImpl) Create(contact *entity.Contact) error {
 	_, err := r.Db.Exec("INSERT INTO contacts (first_name, last_name, phone, email) VALUES ($1, $2, $3, $4)",
 		contact.FirstName, contact.LastName, contact.Phone, contact.Email)
 	if err != nil {
@@ -57,7 +63,7 @@ func (r *PostgresSQLRepository) Create(contact *entity.Contact) error {
 	return nil
 }
 
-func (r *PostgresSQLRepository) Update(contact *entity.Contact) error {
+func (r *ContactsRepoImpl) Update(contact *entity.Contact) error {
 	_, err := r.Db.Exec("UPDATE contacts SET first_name = $1, last_name = $2, phone = $3, email = $4 WHERE id = $5",
 		contact.FirstName, contact.LastName, contact.Phone, contact.Email, contact.ID)
 	if err != nil {
@@ -68,7 +74,7 @@ func (r *PostgresSQLRepository) Update(contact *entity.Contact) error {
 }
 
 // Delete удаляет контакт по указанному идентификатору
-func (r *PostgresSQLRepository) Delete(id int) error {
+func (r *ContactsRepoImpl) Delete(id int) error {
 	_, err := r.Db.Exec("DELETE FROM contacts WHERE id = $1", id)
 	if err != nil {
 		return err

@@ -1,13 +1,14 @@
-package entity
+package usecase
 
 import (
 	"encoding/json"
+	"github.com/DenisTaztdinov/PhoneBook/internal"
 	"log"
 	"net/http"
 )
 
 type ContactHandler struct {
-	Repo ContactRepository
+	Repo internal.ContactRepository
 }
 
 func (h *ContactHandler) GetAllContacts(w http.ResponseWriter, r *http.Request) {

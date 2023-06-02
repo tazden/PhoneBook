@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"github.com/DenisTaztdinov/PhoneBook/config"
-	"github.com/DenisTaztdinov/PhoneBook/internal/entity"
+	"github.com/DenisTaztdinov/PhoneBook/internal/usecase"
 	"github.com/DenisTaztdinov/PhoneBook/internal/usecase/repo"
 	"github.com/DenisTaztdinov/PhoneBook/pkg/logger"
 	_ "github.com/lib/pq"
@@ -20,9 +20,8 @@ func Run(cfg *config.Config) {
 		l.Fatal(err)
 	}
 	defer db.Close()
-
-	repo := &repo.PostgresSQLRepository{Db: db}
-	handler := &entity.ContactHandler{Repo: repo}
+	repo := repo.NewContactsRepo(db)
+	handler := &usecase.ContactHandler{Repo: repo}
 
 	http.HandleFunc("/contacts", handler.GetAllContacts)
 
