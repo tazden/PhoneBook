@@ -10,12 +10,11 @@ import (
 	_ "github.com/lib/pq"
 	"log"
 	"net/http"
-	"os"
 )
 
 func Run(cfg *config.Config) {
 	l := logger.New(cfg.Log.Level)
-	db, err := sql.Open("postgres", os.Getenv("DATABASE_URL"))
+	db, err := sql.Open("postgres", cfg.PG.URL)
 	if err != nil {
 		l.Fatal(err)
 	}
@@ -25,7 +24,7 @@ func Run(cfg *config.Config) {
 
 	http.HandleFunc("/contacts", handler.GetAllContacts)
 
-	port := os.Getenv("PORT")
+	port := cfg.HTTP.Port
 	if port == "" {
 		port = "8080"
 	}

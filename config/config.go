@@ -3,6 +3,7 @@ package config
 import (
 	"fmt"
 	"github.com/ilyakaznacheev/cleanenv"
+	"github.com/joho/godotenv"
 )
 
 type (
@@ -32,15 +33,19 @@ type (
 
 	// PG -.
 	PG struct {
-		PoolMax int `env-required:"true" yaml:"pool_max" env:"PG_POOL_MAX"`
+		PoolMax int    `env-required:"true" yaml:"pool_max" env:"PG_POOL_MAX"`
+		URL     string `env-required:"true"                 env:"PG_URL"`
 	}
 )
 
 // NewConfig returns app config.
 func NewConfig() (*Config, error) {
 	cfg := &Config{}
-
-	err := cleanenv.ReadConfig("./config/config.yml", cfg)
+	err := godotenv.Load()
+	if err != nil {
+		return nil, fmt.Errorf("failed to load environment variables: %w", err)
+	}
+	err = cleanenv.ReadConfig("./config/config.yml", cfg)
 	if err != nil {
 		return nil, fmt.Errorf("config error: %w", err)
 	}
