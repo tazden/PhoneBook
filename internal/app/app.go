@@ -13,6 +13,7 @@ import (
 )
 
 func Run(cfg *config.Config) {
+
 	l := logger.New(cfg.Log.Level)
 	db, err := sql.Open("postgres", cfg.PG.URL)
 	if err != nil {
@@ -31,4 +32,5 @@ func Run(cfg *config.Config) {
 
 	log.Printf("Server is running on port %s", port)
 	l.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", port), nil))
+
 }
