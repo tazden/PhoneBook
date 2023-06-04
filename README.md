@@ -20,6 +20,7 @@ git clone https://github.com/DenisTaztdinov/PhoneBook.git
 shell
 Copy code
 cd project-directory
+
 Установите зависимости:
 
 shell
