@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"github.com/DenisTaztdinov/PhoneBook/internal/entity"
+	"github.com/go-playground/validator"
 )
 
 type ContactsRepoImpl struct {
@@ -59,6 +60,11 @@ func (r *ContactsRepoImpl) Create(contact *entity.Contact) error {
 	if err != nil {
 		return err
 	}
+	validator := validator.New()
+	if err := validator.Struct(contact); err != nil {
+		// Обработка ошибок валидации
+		return err
+	}
 
 	return nil
 }
@@ -69,7 +75,11 @@ func (r *ContactsRepoImpl) Update(contact *entity.Contact) error {
 	if err != nil {
 		return err
 	}
-
+	validator := validator.New()
+	if err := validator.Struct(contact); err != nil {
+		// Обработка ошибок валидации
+		return err
+	}
 	return nil
 }
 
