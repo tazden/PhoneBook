@@ -8,6 +8,7 @@ PostgreSQL
 Docker 
 
 Установка
+
 Склонируйте репозиторий:
 
 shell
